@@ -2,9 +2,9 @@ import streamlit as st
 st.set_page_config(page_title="RecipeGPT", page_icon='🫕', layout='wide')
 from streamlit_extras.colored_header import colored_header
 import openai
-from backend import get_response_stream
+from backend import get_response_stream, look_at_pix, encode_image_from_bytes
 from personas import cuisines, dramatis_personae, all_cuisines, all_audiences
-
+import base64
 
 st.title("🥔🥕🍅🤔⇢🤖⇢👩‍🍳👨‍🍳🍳")
 st.subheader(" Use ChatGPT as your personal Culinary Developer!")
@@ -66,18 +66,43 @@ slider_temperature = advanced_options.slider(label="Change the temperature ('cre
                                       help="Temperature can actually go up to 2.0, but above 1.4 things break down frequently. Even at 1.4 things break down frequently.",
                                       min_value=0.0, max_value = 1.4, value=0.7, step=0.05)
 advanced_options.warning("If you're looking here in the first place, you might like to know that you can also try to guide the AI to create a specific dish by listing the type of dish you want as an ingredient in the chatbox. For example, if you have chicken, spinach and walnuts and want a salad, enter 'salad, chicken, spinach, walnuts'. If you want a stir fry, enter 'stir-fry, chicken, spinach, walnuts.'")
+
+pix_interface = st.expander("Try taking a picture of your fridge, pantry or groceries instead!")
+
+
+pix = pix_interface.camera_input(label="Make sure you've selected the options you like first.",
+                help="Uses your phone camera (mobile) or webcam (desktop).", key="photo_data")
+
+gpt_vision = None
+bytes_data = ""
+if pix is not None:
+    # To read image file buffer as bytes:
+    bytes_data = pix.getvalue()
+    base64_image = encode_image_from_bytes(bytes_data)
+
+    if base64_image:
+        gpt_vision = look_at_pix(base64_image)
+
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# React to user input
-if prompt := st.chat_input("Potatoes, carrots, tomatoes", max_chars=500):
+# Only show chat input if gpt_vision is not available
+if gpt_vision is None:
+    prompt = st.chat_input("Potatoes, carrots, tomatoes", max_chars=500)
+else:
+    # If gpt_vision is available, use it as the prompt
+    prompt = gpt_vision
+
+# Ensure prompt is not empty
+if prompt:
     # Save the message to the chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
     # Display user message in chat message container
     with st.chat_message("user"):
         st.markdown(prompt)
+
 
 # Provide chatbot response
     with st.chat_message('assistant'):
@@ -97,14 +122,14 @@ if prompt := st.chat_input("Potatoes, carrots, tomatoes", max_chars=500):
             message_placeholder.markdown(full_response + "▌")
         message_placeholder.markdown(full_response)
     st.session_state.messages.append({"role": "assistant", "content": full_response})
+    recipe_provided = True
+    gpt_vision = None
+
+if recipe_provided:
+    prompt = st.chat_input("Potatoes, carrots, tomatoes", max_chars=500)
 
 
-pix = st.camera_input(label="Try uploading a photo of your fridge, pantry or "
-                      "grocery haul instead of typing in ingredients manually!",
-                help="This will consume data equivalent to the size of the photograph.")
 
-if pix:
-    st.write("Thanks for the pix!")
 
 # def add_logo():
 #     if dessert:
@@ -131,3 +156,10 @@ if pix:
 #         )
 #
 # add_logo()
+
+# def display_session_state():
+#     st.write("### Session State")
+#     for key, value in st.session_state.items():
+#         st.write(f"{key}: {value}")
+#
+# display_session_state()

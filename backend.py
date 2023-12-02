@@ -206,3 +206,53 @@ def send_email(message=""):
     with smtplib.SMTP_SSL(host, port, context=context) as server:
         server.login(sender_username, password)
         server.sendmail(sender_username, recipient, message)
+
+
+def look_at_pix(base64_image):
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {st.secrets['OPENAI_API_KEY']}"
+    }
+
+    payload = {
+        "model": "gpt-4-vision-preview",
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        # "text": "What’s in this image?"
+                        "text": """You are being tasked with helping a recipe-creation LLM to create recipes based on the ingredients seen in a photograph. You are looking at a picture of food items on a table.  You are going to list only the items you see, without commentary. For example, a good response would be:
+
+  "Milk, carrots, eggs, bell peppers, mushrooms."
+
+  A bad response would be:
+  "A carton of eggs, which can be used in multiple recipes, from omelets to baked dishes.
+  A bottle of milk, a staple for many recipes including sauces, batters, and baked goods.
+  Fresh vegetables, including carrots, bell peppers, mushrooms, tomatoes, and broccoli, suitable for salads, stir-fries, or roasting.
+  Fruits such as apples and lemons, which could be used for desserts, juices, or flavoring dishes.
+  A loaf of bread, likely a baguette, which can be served as a side or used in sandwiches and bread puddings.
+  Various herbs and spices in jars, which are essential for flavoring any dish."
+
+  What food items or potential recipe ingredients do you see in this photo?
+  """
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64,{base64_image}"
+                        }
+                    }
+                ]
+            }
+        ],
+        "max_tokens": 300
+    }
+
+    response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+    return response.json()['choices'][0]['message']['content']
+
+def encode_image_from_bytes(bytes_data):
+    # Directly encode the bytes in base64
+    return base64.b64encode(bytes_data).decode('utf-8')
