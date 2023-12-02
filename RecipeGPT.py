@@ -5,6 +5,7 @@ import openai
 from backend import get_response_stream, look_at_pix, encode_image_from_bytes
 from personas import cuisines, dramatis_personae, all_cuisines, all_audiences
 import base64
+from image_backend_2 import get_stabilityai_image, extract_title
 
 st.title("🥔🥕🍅🤔⇢🤖⇢👩‍🍳👨‍🍳🍳")
 st.subheader(" Use ChatGPT as your personal Culinary Developer!")
@@ -126,37 +127,28 @@ if prompt:
     gpt_vision = None
 
 if recipe_provided:
-    prompt = st.chat_input("Potatoes, carrots, tomatoes", max_chars=500)
+    prompt = st.chat_input("Potatoes, carrots, tomatoes....", max_chars=500)
+
+# Extract recipe title
+recipe_title = False
+if recipe_provided:
+    try:
+        recipe_title = extract_title(full_response)
+        st.write(f"Recipe Title: {recipe_title}")
+    except IndexError:
+        st.write("No recipe title found.")
+    prompt = st.chat_input("Enter your next ingredients or query", max_chars=500)
 
 
 
-
-# def add_logo():
-#     if dessert:
-#         st.markdown(
-#             """
-#             <style>
-#                 [data-testid="stSidebarNav"] {
-#                     background-image: url(http://placekitten.com/200/200);
-#                     background-repeat: no-repeat;
-#                     padding-top: 120px;
-#                     background-position: 20px 20px;
-#                 }
-#                 [data-testid="stSidebarNav"]::before {
-#                     content: "My Company Name";
-#                     margin-left: 20px;
-#                     margin-top: 20px;
-#                     font-size: 30px;
-#                     position: relative;
-#                     top: 100px;
-#                 }
-#             </style>
-#             """,
-#             unsafe_allow_html=True,
-#         )
+if recipe_title is not False:
+    whats_my_dish = st.expander("Want to see what your recipe might look like if you made it?")
+    whats_my_dish.header(f"{recipe_title}")
+    image = get_stabilityai_image(recipe_title)
+    whats_my_dish.image(image, caption=f"Generated Image for {recipe_title}")
 #
-# add_logo()
-
+#
+#
 # def display_session_state():
 #     st.write("### Session State")
 #     for key, value in st.session_state.items():
