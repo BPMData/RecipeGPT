@@ -1,8 +1,5 @@
 import streamlit as st
 st.set_page_config(page_title="RecipeGPT", page_icon='🫕', layout='wide')
-from streamlit_extras.switch_page_button import switch_page
-from streamlit_extras.colored_header import colored_header
-from annotated_text import annotated_text as at
 from streamlit_extras.colored_header import colored_header
 import openai
 from backend import get_response_stream
