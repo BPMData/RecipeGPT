@@ -6,7 +6,7 @@ from backend import get_response_stream
 from personas import cuisines, dramatis_personae, all_cuisines, all_audiences
 
 
-st.title("🥔🥕🍅⇢🤔⇢🤖⇢👩‍🍳👨‍🍳🍳")
+st.title("🥔🥕🍅🤔⇢🤖⇢👩‍🍳👨‍🍳🍳")
 st.subheader(" Use ChatGPT as your personal Culinary Developer!")
 st.write('Give ChatGPT a list of ingredients and your culinary preferences, get an easy-to-follow recipe for a great dish!')
 st.write('*One thing to note... this recipe generator does NOT a memory. Every time send a message to it, it is reacting '
@@ -40,7 +40,7 @@ with rightcol:
     audience_choice = st.radio(label="Please select a target audience for your recipe!", index=0, options=dramatis_personae,
              key='selected_audience', help="The default 'working professional' is perfect for when you're busy but want something delicious.")
 
-advanced_options = st.expander("Advanced options")
+advanced_options = st.expander("Advanced options (Optional)")
 
 dessert = advanced_options.toggle("Dessert?", key='sweets')
 if dessert is True:
