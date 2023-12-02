@@ -99,8 +99,12 @@ if prompt := st.chat_input("Potatoes, carrots, tomatoes", max_chars=500):
     st.session_state.messages.append({"role": "assistant", "content": full_response})
 
 
+pix = st.camera_input(label="Try uploading a photo of your fridge, pantry or "
+                      "grocery haul instead of typing in ingredients manually!",
+                help="This will consume data equivalent to the size of the photograph.")
 
-
+if pix:
+    st.write("Thanks for the pix!")
 
 # def add_logo():
 #     if dessert:
