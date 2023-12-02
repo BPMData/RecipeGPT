@@ -70,7 +70,7 @@ advanced_options.warning("If you're looking here in the first place, you might l
 pix_interface = st.expander("Try taking a picture of your fridge, pantry or groceries instead!")
 
 
-pix = pix_interface.camera_input(label="Make sure you've selected the options you like first.",
+pix = pix_interface.camera_input(label="Make sure you've selected  your desired target cuisine and audience before taking a picture.",
                 help="Uses your phone camera (mobile) or webcam (desktop).", key="photo_data")
 
 gpt_vision = None
