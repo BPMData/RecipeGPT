@@ -15,7 +15,7 @@ st.write('*One thing to note... this recipe generator does NOT have a memory. Ev
 colored_header(label="", description="", color_name="orange-70")
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
-
+recipe_provided = False
 # st.subheader('Trained on the 2013 Edition.')
 
 # Set a default model
