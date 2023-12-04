@@ -6,6 +6,8 @@ from backend import get_response_stream, look_at_pix, encode_image_from_bytes
 from personas import cuisines, dramatis_personae, all_cuisines, all_audiences
 from image_backend_2 import get_stabilityai_image, extract_title
 import random
+from streamlit_extras.switch_page_button import switch_page
+
 
 st.title("🥔🥕🍅🤔⇢🤖⇢👩‍🍳👨‍🍳🍳")
 st.subheader(" Use ChatGPT as your personal Culinary Developer!")
@@ -191,6 +193,9 @@ if st.session_state.get("you_clicked_it_image", None) and st.session_state.get("
 
 if st.session_state.get("generated_image", False):
     st.image(st.session_state.image_data, caption=f"Generated Image for {st.session_state.recipe_title}")
+
+st.divider()
+
 
 #
 # def display_session_state():

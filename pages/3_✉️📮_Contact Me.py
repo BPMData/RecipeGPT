@@ -18,7 +18,7 @@ colored_header(label='Contact Me', description="", color_name="orange-70")
 with st.form(key="contact_form"):
     user_email = st.text_input("Enter your e-mail address here:", placeholder="If you don't enter your real e-mail, I won't be able to get back to you...")
     interest = st.selectbox("What topic do you want to discuss?",
-                            options=("Questions about this specific model", "Questions about building a chatbot",
+                            options=("Report a bug", "Questions about this specific app", "Questions about building a GPT-powered app in general",
                                      "Questions about Pomeranians", "General"))
     user_message = st.text_area("Enter your message to me here:", placeholder="Your message...")
     formatted_message = f"""Subject: {user_email} has reached out to you! \n
