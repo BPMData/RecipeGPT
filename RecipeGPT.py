@@ -37,11 +37,11 @@ st.write(
 
 head1, head2 = st.columns([1,1])
 with head1:
-    contact_me = st.button("📨 me!")
+    contact_me = st.button("Contact me or report a bug!")
     if contact_me:
         switch_page("📮 contact me")
 with head2:
-        check_me_out = st.button("Other stuff!")
+        check_me_out = st.button("Other stuff I've made!")
         if check_me_out:
             switch_page("👀 other things i've made")
 
@@ -69,7 +69,7 @@ leftcol, rightcol = st.columns([1,1])
 
 # ### LEFT COLUMN ####
 with leftcol:
-    cuisine_choice = st.radio(label="Choose a style of cuisine for your recipe!",
+    cuisine_choice = st.selectbox(label="Choose a style of cuisine for your recipe!",
                                   index=0, options=cuisines, key='selected_cuisine',
                                   help='The AI is most likely to use all and only the ingredients you entered if you select "Nothing in particular. "'
                                        "If you select a specific cuisine, the AI will assume you have basic ingredients for that cuisine"
