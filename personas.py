@@ -195,24 +195,15 @@ all_restrictions = {
 }
 
 # Fixing the prompt to accommodate target cuisine being left blank:
-if not target_cuisine == blank:
-    intro_phrase = (
-        f"from {target_cuisine[1]} cuisine, keeping in mind that the audience for your recipe is an enthusiast and expert in {target_cuisine[1]} "
-        f"cuisine who would like you to prepare a dish with authentic {target_cuisine[1]} spices and flavors. "
-        f"Make sure the recipe you suggest includes such classic {target_cuisine[1]} spices and flavors as {target_cuisine[2]}")
-else:
-    intro_phrase = "from any cuisine or culture"
-if not target_cuisine == blank:
-    conjunction = {1: "as well as", 2: ","}
-else:
-    conjunction = {1: "", 2: ""}
+
 
 
 def generate_prompt(target_audience, target_cuisine, dessert=False, dietary_restrictions=None):
     if not target_cuisine == blank:
         intro_phrase = (
-            f"from {target_cuisine[1]} cuisine, keeping in mind that the audience for your recipe is a {target_cuisine[1]} "
-            f"immigrant who would like you to prepare a dish with spices and flavors that reminds them of home.")
+            f"from {target_cuisine[1]} cuisine, keeping in mind that the audience for your recipe is an enthusiast and expert in {target_cuisine[1]} "
+            f"cuisine who would like you to prepare a dish with authentic {target_cuisine[1]} spices and flavors. "
+            f"Make sure the recipe you suggest includes such classic {target_cuisine[1]} spices and flavors as {target_cuisine[2]}")
     else:
         intro_phrase = "from any cuisine or culture"
     if not target_cuisine == blank:
@@ -252,7 +243,7 @@ def generate_prompt(target_audience, target_cuisine, dessert=False, dietary_rest
         Respond as if you were an acclaimed popular food blogger, renown for their knowledge of cooking fundamentals, their 
         flair for modern creativity, and their ability to break things down into straight-forward steps that anyone can follow. 
 
-        You are being asked to prepare a recipe for {target_audience}  Your target audience would like a DESSERT recipe!
+        You are being asked to prepare a recipe for {target_audience}  Your target audience would like a DESSERT recipe! They will provide you with a list of ingredients to use in the recipe. If you are not given any food items to use, please decline to generate a recipe.
 
         {dietary_restrictions_text}
 
