@@ -69,7 +69,7 @@ leftcol, rightcol = st.columns([1,1])
 
 # ### LEFT COLUMN ####
 with leftcol:
-    cuisine_choice = st.selectbox(label="Choose a style of cuisine for your recipe!",
+    cuisine_choice = st.radio(label="Choose a style of cuisine for your recipe!",
                                   index=0, options=cuisines, key='selected_cuisine',
                                   help='The AI is most likely to use all and only the ingredients you entered if you select "Nothing in particular. "'
                                        "If you select a specific cuisine, the AI will assume you have basic ingredients for that cuisine"
