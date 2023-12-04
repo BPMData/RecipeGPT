@@ -4,8 +4,8 @@ from streamlit_extras.colored_header import colored_header
 import openai
 from backend import get_response_stream, look_at_pix, encode_image_from_bytes
 from personas import cuisines, dramatis_personae, all_cuisines, all_audiences
-import base64
 from image_backend_2 import get_stabilityai_image, extract_title
+import random
 
 st.title("🥔🥕🍅🤔⇢🤖⇢👩‍🍳👨‍🍳🍳")
 st.subheader(" Use ChatGPT as your personal Culinary Developer!")
@@ -27,15 +27,31 @@ if "openai_model" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+def suprise_me_clicked():
+    st.session_state.suprise_me_selected = True
+
+def intentional_cuisine_choice():
+    st.session_state.suprise_me_selected = None
+
 leftcol, rightcol = st.columns([1,1])
 
 # ### LEFT COLUMN ####
 with leftcol:
     cuisine_choice = st.selectbox(label="Choose a style of cuisine for your recipe!",
                                   index=0, options=cuisines, key='selected_cuisine',
-                                  help='The AI is most likely to use all and only the ingredients you entered if you select "Anything is fine. "'
+                                  help='The AI is most likely to use all and only the ingredients you entered if you select "Nothing in particular. "'
                                        "If you select a specific cuisine, the AI will assume you have basic ingredients for that cuisine"
-                                       " - for example, if you select Italian the AI will assume you have basil and garlic, and if you select Korean, the AI will assume you have gochujang.")
+                                       " - for example, if you select Italian the AI will assume you have basil and garlic, and if you select Korean, the AI will assume you have gochujang.",
+                                  on_change=intentional_cuisine_choice)
+    suprise_me = st.button(label="Surprise me!", on_click=suprise_me_clicked)
+
+    if not st.session_state.get("suprise_me_selected", None):
+        cuisine_to_use = all_cuisines[cuisine_choice]
+    if st.session_state.get("suprise_me_selected", None):
+        random_cuisine = random.choice(cuisines)
+        cuisine_to_use = all_cuisines[random_cuisine]
+        st.warning("The recipe generated will be in the style of a randomly selected cuisine!")
+
 with rightcol:
     # Call the function at the end of your script
     audience_choice = st.radio(label="Please select a target audience for your recipe!", index=0, options=dramatis_personae,
@@ -70,29 +86,42 @@ advanced_options.warning("If you're looking here in the first place, you might l
 
 pix_interface = st.expander("Try taking a picture of your fridge, pantry or groceries instead!")
 
+def clicked():
+    st.session_state.you_clicked_it = True
+    st.session_state.image_used = False
 
 pix = pix_interface.camera_input(label="Make sure you've selected  your desired target cuisine and audience before taking a picture.",
-                help="Uses your phone camera (mobile) or webcam (desktop).", key="photo_data")
+                help="Uses your phone camera (mobile) or webcam (desktop).", key="photo_data", on_change=clicked)
+
+if pix is not None:
+    st.warning("To take another photo, press 'Clear photo' above.")
+
+if st.session_state.get("photo_data", None) is None:
+    st.session_state.vision_used = False
 
 gpt_vision = None
 bytes_data = ""
-if pix is not None:
+if pix is not None and st.session_state.get("vision_used", False) is False:
     # To read image file buffer as bytes:
     bytes_data = pix.getvalue()
     base64_image = encode_image_from_bytes(bytes_data)
 
     if base64_image:
         gpt_vision = look_at_pix(base64_image)
+        st.session_state.vision_used = True
+
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
+prompt = ""
+
 # Only show chat input if gpt_vision is not available
-if gpt_vision is None:
-    prompt = st.chat_input("Potatoes, carrots, tomatoes", max_chars=500)
-else:
+if gpt_vision is None or st.session_state.get("you_clicked_it", False) is False:
+    prompt = st.chat_input("Potatoes, carrots, tomatoes", max_chars=500, key="if_chatbox")
+if st.session_state.get("vision_used", False) and st.session_state.get("image_used", False) is False:
     # If gpt_vision is available, use it as the prompt
     prompt = gpt_vision
 
@@ -103,6 +132,7 @@ if prompt:
     # Display user message in chat message container
     with st.chat_message("user"):
         st.markdown(prompt)
+        st.session_state.image_used = True
 
 
 # Provide chatbot response
@@ -112,7 +142,7 @@ if prompt:
         for response in get_response_stream(
                 ingredients_list=prompt,
                 model='gpt-3.5-turbo',
-                target_cuisine=all_cuisines[cuisine_choice],
+                target_cuisine=cuisine_to_use,
                 target_audience=all_audiences[audience_choice],
                 must_nots=must_not_include,
                 sweets=dessert,
@@ -125,9 +155,13 @@ if prompt:
     st.session_state.messages.append({"role": "assistant", "content": full_response})
     recipe_provided = True
     gpt_vision = None
+    st.session_state.you_clicked_it = False
+    st.session_state.generated_image = None
+    st.session_state.you_clicked_it = None
+    st.session_state.you_clicked_it_image = None
+    st.session_state.suprise_me_selected = False
 
-if recipe_provided:
-    prompt = st.chat_input("Potatoes, carrots, tomatoes....", max_chars=500)
+
 
 # Extract recipe title
 recipe_title = False
@@ -135,19 +169,29 @@ if recipe_provided:
     try:
         recipe_title = extract_title(full_response)
         st.write(f"Recipe Title: {recipe_title}")
+        st.session_state.recipe_title = recipe_title
     except IndexError:
         st.write("No recipe title found.")
-    prompt = st.chat_input("Enter your next ingredients or query", max_chars=500)
 
 
+def clicked2():
+    st.session_state.you_clicked_it_image = True
 
-if recipe_title is not False:
-    whats_my_dish = st.expander("Want to see what your recipe might look like if you made it?")
-    whats_my_dish.header(f"{recipe_title}")
-    image = get_stabilityai_image(recipe_title)
-    whats_my_dish.image(image, caption=f"Generated Image for {recipe_title}")
-#
-#
+
+if st.session_state.get("recipe_title", None):
+    if st.session_state.get("generated_image", None) is None and not st.session_state.get("you_clicked_it_image", False):
+        image_button = st.button("Click here to generate an image of your recipe!", key="stability_button", on_click=clicked2)
+
+if st.session_state.get("you_clicked_it_image", None) and st.session_state.get("generated_image") is None:
+    st.header(f"{st.session_state.recipe_title}")
+    image = get_stabilityai_image(st.session_state.recipe_title)
+    st.session_state.image_data = image
+    st.session_state.generated_image = st.session_state.recipe_title
+    st.session_state.you_clicked_it_image = None
+
+if st.session_state.get("generated_image", False):
+    st.image(st.session_state.image_data, caption=f"Generated Image for {st.session_state.recipe_title}")
+
 #
 # def display_session_state():
 #     st.write("### Session State")

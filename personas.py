@@ -34,7 +34,7 @@ all_audiences = {
 # List of target cuisines
 ### NOTE TO SELF: NO PUNCTUATION AT END OF EITHER KEY/VALUE PAIR!) ###
 
-cuisines = ['Anything is fine', 'American', 'American (Cajun)', 'Chinese (Cantonese - Most common style in US)',
+cuisines = ['Nothing in particular', 'American', 'American (Cajun)', 'Chinese (Cantonese - Most common style in US)',
             'Chinese (Hong Kong)', 'Chinese (Sichuan)', 'Chinese (Shandong)', 'Chinese (Jiangsu)',
             'French', 'Greek', 'North Indian', 'South Indian', 'Italian', 'Japanese (Kansai)', 'Japanese (Kanto)',
             'Korean', 'Mexican', 'Peruvian', 'Spanish', 'Thai', 'Turkish', 'Vietnamese']
@@ -143,7 +143,7 @@ china_jiangsu = {1: "Huaiyang/Jianghuai(Chinese)",
 target_cuisine = {1: "", 2: ""}
 
 all_cuisines = {
-    'Anything is fine': blank,
+    'Nothing in particular': blank,
     'American': american,
     'American (Cajun)': cajun,
     'Chinese (Cantonese - Most common style in US)': china_cantonese,
@@ -233,7 +233,7 @@ def generate_prompt(target_audience, target_cuisine, dessert=False, dietary_rest
     Respond as if you were an acclaimed popular food blogger, renown for their knowledge of cooking fundamentals, their 
     flair for modern creativity, and their ability to break things down into straight-forward steps that anyone can follow. 
 
-    You are being asked to prepare a recipe for {target_audience} 
+    You are being asked to prepare a recipe for {target_audience} . They will provide you with a list of ingredients to use in the recipe. If you are not given any food items to use, please decline to generate a recipe.
 
     {dietary_restrictions_text}
 
@@ -271,7 +271,7 @@ def generate_prompt(target_audience, target_cuisine, dessert=False, dietary_rest
 print("MICROPHONE TESTING 1 2 3")
 print(f'The value of all_cuisines[American (Cajun)] is {all_cuisines["American (Cajun)"]}')
 
-print(all_cuisines['Anything is fine'])
+print(all_cuisines['Nothing in particular'])
 
 print(generate_prompt(target_audience=all_audiences['A working professional.'],
                       target_cuisine=all_cuisines['American (Cajun)'], dessert=True))
