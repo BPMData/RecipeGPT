@@ -12,8 +12,8 @@ from streamlit_extras.switch_page_button import switch_page
 st.title("🥔🥕🍅🤔⇢🤖⇢👩‍🍳👨‍🍳🍳")
 st.subheader(" Use ChatGPT as your personal Culinary Developer!")
 st.write('Give ChatGPT a list of ingredients and your culinary preferences, get an easy-to-follow recipe for a great dish!')
-st.write('*One thing to note... this recipe generator does NOT have a memory. Every time send a message to it, it is reacting '
-         'as if speaking to you for the first time. If the AI gives you a recipe you would like to tweak, '
+st.write("If you're on mobile, click the '>' at the top left of the page to contact me or check out other things I've made :)")
+st.info('*One thing to note... this recipe generator does NOT have a memory. If the AI gives you a recipe you would like to tweak, '
          'try copy-pasting the recipe into the actual [OpenAI ChatGPT interface.](https://chat.openai.com/)*')
 colored_header(label="", description="", color_name="orange-70")
 
