@@ -11,10 +11,13 @@ from streamlit_extras.switch_page_button import switch_page
 
 st.title("🥔🥕🍅🤔⇢🤖⇢👩‍🍳👨‍🍳🍳")
 st.subheader(" Use ChatGPT as your personal Culinary Developer!")
-st.write('Give ChatGPT a list of ingredients and your culinary preferences, get an easy-to-follow recipe for a great dish!')
-st.write("If you're on mobile, click the '>' at the top left of the page to contact me or check out other things I've made :)")
-st.info('*One thing to note... this recipe generator does NOT have a memory. If the AI gives you a recipe you would like to tweak, '
-         'try copy-pasting the recipe into the actual [OpenAI ChatGPT interface.](https://chat.openai.com/)*')
+
+head1, head2 = st.columns([1,1])
+with head1:
+    st.write('Give ChatGPT a list of ingredients and your culinary preferences, get an easy-to-follow recipe for a great dish!')
+with head2:
+    st.write("*If you're on mobile, click the '>' at the top left of the page to contact me or check out other things I've made!*")
+
 colored_header(label="", description="", color_name="orange-70")
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
@@ -112,6 +115,8 @@ if pix is not None and st.session_state.get("vision_used", False) is False:
         gpt_vision = look_at_pix(base64_image)
         st.session_state.vision_used = True
 
+st.info('*One thing to note... this recipe generator does NOT have a memory. To tweak a recipe, '
+         "try copy-pasting the recipe to [OpenAI's ChatGPT interface.](https://chat.openai.com/)*")
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
