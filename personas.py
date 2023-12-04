@@ -197,8 +197,8 @@ all_restrictions = {
 # Fixing the prompt to accommodate target cuisine being left blank:
 if not target_cuisine == blank:
     intro_phrase = (
-        f"from {target_cuisine[1]} cuisine, keeping in mind that the audience for your recipe is a {target_cuisine[1]} "
-        f"immigrant who would like you to prepare a dish with spices and flavors that reminds them of home. "
+        f"from {target_cuisine[1]} cuisine, keeping in mind that the audience for your recipe is an enthusiast and expert in {target_cuisine[1]} "
+        f"cuisine who would like you to prepare a dish with authentic {target_cuisine[1]} spices and flavors. "
         f"Make sure the recipe you suggest includes such classic {target_cuisine[1]} spices and flavors as {target_cuisine[2]}")
 else:
     intro_phrase = "from any cuisine or culture"
