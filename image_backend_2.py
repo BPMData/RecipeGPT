@@ -107,3 +107,4 @@ def get_stabilityai_image(recipe_title):
     image = Image.open(BytesIO(base64.b64decode(image_data)))
 
     return image
+

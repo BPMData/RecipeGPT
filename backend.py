@@ -16,7 +16,7 @@ litellm.set_verbose=True
 
 # @retry(wait=wait_random_exponential(multiplier=1, max=40), stop=stop_after_attempt(3))
 def get_response_stream(ingredients_list, model='gpt-3.5-turbo', temperature=0.7, tokens=3000, target_audience=all_audiences['A working professional.'],
-                 target_cuisine=all_cuisines["Anything is fine"], model_to_use="gpt-3.5-turbo",
+                 target_cuisine=all_cuisines["Nothing in particular"], model_to_use="gpt-3.5-turbo",
                         must_nots="", sweets=False, restrictions=[]):
     try:
         # Initialize must_not_text
@@ -30,14 +30,14 @@ def get_response_stream(ingredients_list, model='gpt-3.5-turbo', temperature=0.7
         response = completion(
             model=model_to_use,
             messages=[{"content": generate_prompt(target_audience, target_cuisine, dessert=sweets, dietary_restrictions=restrictions), "role": "system"},
-                      {"content": f'The ingredients list is: """{ingredients_list}."""'
-                              'If the ingredients list is long, indicating perhaps everything the user has in their '
-                              'fridge or bought while grocery shopping, simply choose a few ingredients that you think would make the best dish and use those. '
-                              'Before you begin generating your recipe, double check the ingredients list to make sure '
-                              'you understood the ingredients properly. For example, chicken or beef broth is a liquid, not the meat itself. If you have only broth, you cannot make a meat dish. '
-                              f'{must_not_text}'
-                              f'Introduce yourself and the dish to your fellow foodies first, but when you get to the recipe itself, assign a title to the recipe beginning with'
-                              f'the exact string "Recipe Title: " to the recipe.', "role": "user"}],
+                      {"content": f'The ingredients list is: """{ingredients_list}.""" If the ingredients list directly above is empty or contains no food items, or is a phrase such as I am sorry, I cannot help with that request", DO NOT generate a recipe. Please reply that you are sorry, but you can only generate a recipe if given ingredients in the first place.'                                                                                                                                                                                                                                                                                                         
+                                  'If the ingredients list is long, indicating perhaps everything the user has in their '
+                                  'fridge or bought while grocery shopping, simply choose a few ingredients that you think would make the best dish and use those. '
+                                  'Before you begin generating your recipe, double check the ingredients list to make sure '
+                                  'you understood the ingredients properly. For example, chicken or beef broth is a liquid, not the meat itself. If you have only broth, you cannot make a meat dish. '
+                                  f'{must_not_text}'
+                                  f'Introduce yourself and the dish to your fellow foodies first, but when you get to the recipe itself, assign a title to the recipe beginning with'
+                                  f'the exact string "Recipe Title: " to the recipe.', "role": "user"}],
         max_tokens = tokens,
         temperature = temperature,
         stream = True,
@@ -50,11 +50,12 @@ def get_response_stream(ingredients_list, model='gpt-3.5-turbo', temperature=0.7
         print(f"Exception {e} raised, retrying....")
 
 def get_response(ingredients_list, model='gpt-3.5-turbo', temperature=0.7, tokens=2000, target_audience=all_audiences['A working professional.'],
-                 target_cuisine=all_cuisines["Anything is fine"], model_to_use="gpt-3.5-turbo"):
+                 target_cuisine=all_cuisines["Nothing in particular"], model_to_use="gpt-3.5-turbo"):
     response = completion(
         model=model_to_use,
         messages=[{"content": generate_prompt(target_audience, target_cuisine), "role": "system"},
                   {"content": f'The ingredients list is: """{ingredients_list}"""'
+                              "If the ingredients list is empty or contains no food items, or is a phrase such as 'I'm sorry, I can't help with that request', please reply that you are sorry, but you can only generate a recipe if given ingredients in the first place."
                               'If the ingredients list is long, indicating perhaps everything the user has in their '
                               'fridge or bought while grocery shopping, simply choose a few ingredients that you think would make the best dish and use those. '
                               'Before you begin generating your recipe, double check the ingredients list to make sure '
