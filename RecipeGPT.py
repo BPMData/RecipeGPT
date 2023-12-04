@@ -8,9 +8,18 @@ from image_backend_2 import get_stabilityai_image, extract_title
 import random
 from streamlit_extras.switch_page_button import switch_page
 
+st.write('''<style>
+[data-testid="column"] {
+    width: calc(33.3333% - 1rem) !important;
+    flex: 1 1 calc(33.3333% - 1rem) !important;
+    min-width: calc(33% - 1rem) !important;
+}
+</style>''', unsafe_allow_html=True)
 
 st.title("🥔🥕🍅🤔⇢🤖⇢👩‍🍳👨‍🍳🍳")
 st.subheader(" Use ChatGPT as your personal Culinary Developer!")
+
+
 
 # head1, head2, head3 = st.columns([2,1,1])
 # with head1:
