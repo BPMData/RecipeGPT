@@ -12,11 +12,31 @@ from streamlit_extras.switch_page_button import switch_page
 st.title("🥔🥕🍅🤔⇢🤖⇢👩‍🍳👨‍🍳🍳")
 st.subheader(" Use ChatGPT as your personal Culinary Developer!")
 
-head1, head2 = st.columns([1,1])
+# head1, head2, head3 = st.columns([2,1,1])
+# with head1:
+#     st.write('Give ChatGPT a list of ingredients and your culinary preferences, get an easy-to-follow recipe for a great dish!')
+# with head2:
+#     contact_me = st.button("Contact me!")
+#     if contact_me:
+#         switch_page("📮 contact me")
+# with head3:
+#     check_me_out = st.button("Other stuff I've made!")
+#     if check_me_out:
+#         switch_page("👀 other things i've made")
+
+head1, head2 = st.columns([2,1])
 with head1:
     st.write('Give ChatGPT a list of ingredients and your culinary preferences, get an easy-to-follow recipe for a great dish!')
 with head2:
-    st.write("*If you're on mobile, click the '>' at the top left of the page to contact me or check out other things I've made!*")
+    head3, head4 = st.columns([1,1])
+    with head3:
+        contact_me = st.button("Contact me or report a bug!")
+        if contact_me:
+            switch_page("📮 contact me")
+    with head4:
+        check_me_out = st.button("Check out other stuff I've made!")
+        if check_me_out:
+            switch_page("👀 other things i've made")
 
 colored_header(label="", description="", color_name="orange-70")
 
