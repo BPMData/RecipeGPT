@@ -62,7 +62,7 @@ with bible2:
              "to create an interactive timeline of this nature for any book they have in .txt or DRM-free .pdf or .epub format.")
 st.divider()
 
-colored_header(label="[What's On with Don: An Attempt to Use OpenAI's built-in 'Create a GPT' to create a chatbot to help you keep abreast of the latest developments in Trump's legal troubles](https://chat.openai.com/g/g-L4vGrKHFT-what-s-on-with-don)", description="", color_name="orange-70")
+colored_header(label="[What's On with Don: Updates on Donald Trump's legal issues using news and RAG.](https://chat.openai.com/g/g-L4vGrKHFT-what-s-on-with-don)", description="", color_name="orange-70")
 don1, don2 = st.columns([1,2])
 with don1:
     st.markdown("""
@@ -76,9 +76,11 @@ with don2:
     st.write("An experiment in using OpenAI's much-heralded 'Create a GPT' to quickly generate a chatbot specifically "
              "designed to help people keep up to date with Donald Trump's frankly bewildering panalopy of legal troubles and travails. "
              "The chatbot uses Retrieval-Augmented Generation (RAG) of the actual texts of Donald Trump's various indictments and other official prosecutorial legal filings "
-             "to try to generate more accurate responses to legal-related questions, while attempting to rely on OpenAI's fairly opaque 'Search with Bing' functionality to answer questions not "
-             "specifically related to a specific trial or indictment. Would honestly be better as a Streamlit app, which would allow for "
-             "greater customization of system and assistant prompts, as well as customizing the token context length for RAG chunking and retrieval. More of a proof of concept and tech demo than anything else.")
+             "to try to generate more accurate responses to legal-related questions, while attempting to rely on OpenAI's 'Search with Bing' functionality to answer questions not "
+             "specifically related to a specific trial or indictment.")
+    st.write("Would honestly be better as a Streamlit app, which would allow for "
+             "greater customization of system and assistant prompts, as well as customizing the token context length for RAG chunking and retrieval. Another :violet[BIG minus] of 'Create a GPT' is that :violet[currently only ChatGPT+ subscribers can even view this.]")
+    st.write("More of a proof of concept and tech demo than anything else.")
 st.divider()
 
 colored_header(label='[Rudimentary Custom Weather Forestcaster Using Basic Weather API](https://weatherforecaster.streamlit.app/)', description="", color_name="orange-70")
