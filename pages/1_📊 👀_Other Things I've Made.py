@@ -139,7 +139,7 @@ with kfood1:
 
 with kfood2:
     st.markdown(":orange[Easily my favorite thing I've made other than RecipeGPT itself], this was the [summative final project for my Google Data Analytics Certificate](https://koreanfood.shorthandstories.com/casestudy/). "
-             "This was my first experience makign a 'scrollytelling' digital article, performing a more in-depth time series analysis, and optimizing a web page for both desktop and mobile.")
+             "This was my first experience making a 'scrollytelling' digital article, performing a more in-depth time series analysis, and optimizing a web page for both desktop and mobile.")
     st.write("When told I could do a case study on ANYTHING I wanted, I decided to invest in learning how to make a "
              "'scrollytelling' interactive web article, discovering [the excellent web service Shorthand](https://shorthand.com/) that makes doing just relatively simple (albeit with a heavy emphasis on the 'relatively').")
 
