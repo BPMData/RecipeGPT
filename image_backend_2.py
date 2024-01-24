@@ -81,7 +81,7 @@ def get_stabilityai_image(recipe_title):
                 "weight": 1
             },
             {
-                "text": "Multiple dishes, empty table, zoomed out, blurry, out of focus",
+                "text": "Multiple dishes, knife, fork, spoon, cutlery, silverware, empty table, zoomed out, blurry, out of focus",
                 "weight": -1
             }
         ],
