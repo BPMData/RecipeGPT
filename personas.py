@@ -1,7 +1,7 @@
 # List of target audiences:
 working_professional = 'a working professional who would like to be able to whip up a quick but delicious weeknight meal.'
 
-hot_date = 'a hot date whom you have all the time, money and energy you need to make a fancy dish that is sure to impress!'
+important_person = 'an important person whom you have all the time, money and energy you need to make a fancy dish that is sure to impress!'
 
 college_student = 'a college student who requires a simple recipe that can be prepared using only a microwave.'
 
@@ -15,7 +15,7 @@ solo_diner = "a solitary individual looking for single-serving recipes that are 
 
 health_conscious = "a health enthusiast who prefers meals that are nutritious, low in unnecessary calories, include fresh produce (possibly organic) and are high in protein when possible."
 
-dramatis_personae = ['A working professional.', 'A hot date you want to impress!', 'A busy family with children.',
+dramatis_personae = ['A working professional.', 'An important person you want to impress!', 'A busy family with children.',
                      'The elderly or mobility impaired.',
                      'A meal prepper who makes food for the entire week in one go.',
                      "A solo diner who doesn't want to deal with leftovers.",
@@ -23,7 +23,7 @@ dramatis_personae = ['A working professional.', 'A hot date you want to impress!
 
 all_audiences = {
     'A working professional.': working_professional,
-    'A hot date you want to impress!': hot_date,
+    'An important person you want to impress!': important_person,
     'A busy family with children.': family,
     'The elderly or mobility impaired.': elderly,
     'A meal prepper who makes food for the entire week in one go.': meal_prepper,
