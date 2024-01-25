@@ -38,6 +38,7 @@ kiwisolver==1.4.5
 litellm==1.9.5
 lxml==4.9.3
 Markdown==3.5.1
+markdown2==2.4.12
 markdown-it-py==3.0.0
 markdownlit==0.0.7
 MarkupSafe==2.1.3

@@ -9,7 +9,7 @@ import random
 from streamlit_extras.switch_page_button import switch_page
 from backend import send_email_html
 import markdown2
-import markupsafe
+
 
 
 st.write('''<style>
@@ -246,10 +246,6 @@ if st.session_state.get("recipe_title", None):
 
         html2send = markdown2.markdown(st.session_state.last_recipe)
         st.session_state.recipe_converted_to_html = html2send
-
-        # html2send = markupsafe.escape(st.session_state.last_recipe)
-        # st.session_state.recipe_converted_to_html = html2send
-
 
         formatted_message = f"""
         <html>
