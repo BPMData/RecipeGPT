@@ -270,9 +270,9 @@ if st.session_state.get("recipe_title", None):
             st.info(f"Your recipe for {st.session_state.recipe_title} was successfully e-mailed to {user_email}!")
 
 
-def display_session_state():
-    st.write("### Session State")
-    for key, value in st.session_state.items():
-        st.write(f"{key}: {value}")
-
-display_session_state()
+# def display_session_state():
+#     st.write("### Session State")
+#     for key, value in st.session_state.items():
+#         st.write(f"{key}: {value}")
+#
+# display_session_state()
