@@ -7,6 +7,10 @@ from personas import cuisines, dramatis_personae, all_cuisines, all_audiences
 from image_backend_2 import get_stabilityai_image, extract_title
 import random
 from streamlit_extras.switch_page_button import switch_page
+from backend import send_email_html
+import markdown2
+import markupsafe
+
 
 st.write('''<style>
 [data-testid="column"] {
@@ -187,6 +191,8 @@ if prompt:
             message_placeholder.markdown(full_response + "▌")
         message_placeholder.markdown(full_response)
     st.session_state.messages.append({"role": "assistant", "content": full_response})
+    st.session_state.last_recipe = full_response  # Save the most recent recipe to this session key, and overwrite it every time.
+    st.session_state.last_ingredients = prompt
     recipe_provided = True
     gpt_vision = None
     st.session_state.you_clicked_it = False
@@ -226,13 +232,51 @@ if st.session_state.get("you_clicked_it_image", None) and st.session_state.get("
 if st.session_state.get("generated_image", False):
     st.image(st.session_state.image_data, caption=f"Generated Image for {st.session_state.recipe_title}")
 
+
 st.divider()
 
+if st.session_state.get("recipe_title", None):
+    with st.form(key="sendmerecipe_form"):
+        colored_header(label='I love it - E-mail myself this recipe/dish!', description="", color_name="orange-70")
 
-#
-# def display_session_state():
-#     st.write("### Session State")
-#     for key, value in st.session_state.items():
-#         st.write(f"{key}: {value}")
-#
-# display_session_state()
+        user_email = st.text_input("Enter your e-mail address here:", placeholder="The recipe and image, if any, will be sent to this address")
+
+        email_subject = f"{user_email} has sent you a recipe for {st.session_state.recipe_title }"
+
+
+        html2send = markdown2.markdown(st.session_state.last_recipe)
+        st.session_state.recipe_converted_to_html = html2send
+
+        # html2send = markupsafe.escape(st.session_state.last_recipe)
+        # st.session_state.recipe_converted_to_html = html2send
+
+
+        formatted_message = f"""
+        <html>
+            <body>
+                <p>Using the ingredients {st.session_state.last_ingredients}, <a href="https://recipesbygpt.streamlit.app">Recipes by GPT</a> created the following recipe for you!</p>
+                <h2 style="font-weight: bold;">{st.session_state.recipe_title}</h2>
+
+                <p>{html2send}</p>
+                <p><b>Bon Appétit!</b></p>
+                <p><i>This message was created by using <a href="https://recipesbygpt.streamlit.app">Recipes by GPT</a>. Please double-check the recipe before using it and use common sense. This recipe was created with generative AI and may be inaccurate or even unsafe.</i></p>
+            </body>
+        </html>
+        """
+
+        submit_button = st.form_submit_button("E-mail me this recipe!")
+        if submit_button:
+            image_to_attach = None
+            if st.session_state.get("image_data", None):
+                image_to_attach = st.session_state.image_data
+            print("E-mail sent!")
+            send_email_html(email_subject, user_email, formatted_message, image_to_attach)
+            st.info(f"Your recipe for {st.session_state.recipe_title} was successfully e-mailed to {user_email}!")
+
+
+def display_session_state():
+    st.write("### Session State")
+    for key, value in st.session_state.items():
+        st.write(f"{key}: {value}")
+
+display_session_state()

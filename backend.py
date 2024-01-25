@@ -11,6 +11,10 @@ from litellm import completion
 # from tenacity import retry, wait_random_exponential, stop_after_attempt
 import streamlit as st
 import ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.image import MIMEImage
+from io import BytesIO
 
 litellm.set_verbose=True
 
@@ -207,6 +211,42 @@ def send_email(message=""):
     with smtplib.SMTP_SSL(host, port, context=context) as server:
         server.login(sender_username, password)
         server.sendmail(sender_username, recipient, message)
+
+def send_email_html(subject, recipe_recipient, message="", image=None):
+    host = "smtp.gmail.com"
+    port = 465
+    sender_username = "bryan.patrick.a.murphy@gmail.com"
+    password = st.secrets["GMAIL_SEND_KEY"]
+
+    recipient = recipe_recipient
+
+    context = ssl.create_default_context()
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = subject
+    msg["From"] = sender_username
+    msg["To"] = recipient
+
+    html = MIMEText(message, "html")
+
+    msg.attach(html)
+
+    # Everything below is new for the image attachment process
+    # Attach the image if provided
+    if image is not None:
+        # Convert the PIL image to a byte stream
+        img_byte_arr = BytesIO()
+        image.save(img_byte_arr, format=image.format)
+        img_byte_arr = img_byte_arr.getvalue()
+
+        # Create a MIMEImage object and attach it to the email
+        img_attachment = MIMEImage(img_byte_arr, name='Recipe.png')
+        msg.attach(img_attachment)
+    # Everything above is new for the image attachment process
+
+    with smtplib.SMTP_SSL(host, port, context=context) as server:
+        server.login(sender_username, password)
+        server.sendmail(sender_username, recipient, msg.as_string())
 
 
 def look_at_pix(base64_image):
