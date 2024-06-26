@@ -306,10 +306,13 @@ def look_at_pix(base64_image):
                 logging.debug("Received line: %s", line_data)
                 if line_data.startswith("data: "):
                     line_data = line_data[len("data: "):]
+                    if line_data == "[DONE]":
+                        break
                     try:
                         chunk = json.loads(line_data)
                         if "choices" in chunk:
-                            content += chunk["choices"][0]["delta"]["content"]
+                            delta_content = chunk["choices"][0]["delta"].get("content", "")
+                            content += delta_content
                     except json.JSONDecodeError as e:
                         logging.error("JSON decode error: %s", e)
 
