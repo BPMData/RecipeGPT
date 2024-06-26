@@ -263,7 +263,6 @@ def look_at_pix(base64_image):
                 "content": [
                     {
                         "type": "text",
-                        # "text": "What’s in this image?"
                         "text": """You are being tasked with helping a recipe-creation LLM to create recipes based on the ingredients seen in a photograph. You are looking at a picture of food items on a table.  You are going to list only the items you see, without commentary. For example, a good response would be:
 
   "Milk, carrots, eggs, bell peppers, mushrooms."
@@ -291,8 +290,21 @@ def look_at_pix(base64_image):
         "max_tokens": 300
     }
 
-    response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
-    return response.json()['choices'][0]['message']['content']
+    try:
+        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+        response.raise_for_status()  # Check if the request was successful
+        response_data = response.json()
+        if 'choices' in response_data:
+            return response_data['choices'][0]['message']['content']
+        else:
+            print("Response does not contain 'choices' key")
+            return "An unexpected response was received from the API."
+    except requests.exceptions.RequestException as e:
+        print(f"API request failed: {e}")
+        return "An error occurred while processing the image."
+    except ValueError as e:
+        print(f"Invalid response: {e}")
+        return "An unexpected response was received from the API."
 
 def encode_image_from_bytes(bytes_data):
     # Directly encode the bytes in base64
