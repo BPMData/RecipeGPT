@@ -109,7 +109,7 @@ with rpub1:
         """, unsafe_allow_html=True)
     st.markdown("""
         <a href="https://rpubs.com/BPMData/Project2_WeatherAnalysis" target="_blank">
-            <img src="https://drive.google.com/uc?export=download&id=1PD3aiww3-VbzzWQDX0VDW_EHSd8W3Xby" 
+            <img src="https://lh3.googleusercontent.com/d/1PD3aiww3-VbzzWQDX0VDW_EHSd8W3Xby" 
                  style="width:100%; height:auto;">
         </a>
         """, unsafe_allow_html=True)
