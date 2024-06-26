@@ -298,9 +298,11 @@ def look_at_pix(base64_image):
             return response_data['choices'][0]['message']['content']
         else:
             print("Response does not contain 'choices' key")
+            print("Response data:", response_data)
             return "An unexpected response was received from the API."
     except requests.exceptions.RequestException as e:
         print(f"API request failed: {e}")
+        print("Response content:", response.content)
         return "An error occurred while processing the image."
     except ValueError as e:
         print(f"Invalid response: {e}")
