@@ -257,7 +257,7 @@ def look_at_pix(base64_image):
         "Authorization": f"Bearer {st.secrets['OPENAI_API_KEY']}"
     }
     payload = {
-        "model": "gpt-4-vision-preview",
+        "model": "gpt-4o",
         "messages": [
             {
                 "role": "user",
