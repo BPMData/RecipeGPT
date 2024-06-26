@@ -287,25 +287,39 @@ def look_at_pix(base64_image):
                 ]
             }
         ],
-        "max_tokens": 300
+        "max_tokens": 300,
+        "stream": True  # Enable streaming responses
     }
 
     try:
-        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload, stream=True)
         response.raise_for_status()  # Check if the request was successful
-        response_data = response.json()
-        if 'choices' in response_data:
-            return response_data['choices'][0]['message']['content']
+
+        content = ""
+        for line in response.iter_lines():
+            if line:
+                line_data = line.decode('utf-8')
+                logging.debug("Received line: %s", line_data)
+                if line_data.startswith("data: "):
+                    line_data = line_data[len("data: "):]
+                    try:
+                        chunk = json.loads(line_data)
+                        if "choices" in chunk:
+                            content += chunk["choices"][0]["delta"]["content"]
+                    except json.JSONDecodeError as e:
+                        logging.error("JSON decode error: %s", e)
+
+        if content:
+            return content.strip()
         else:
-            print("Response does not contain 'choices' key")
-            print("Response data:", response_data)
+            logging.error("No content found in the response")
             return "An unexpected response was received from the API."
     except requests.exceptions.RequestException as e:
-        print(f"API request failed: {e}")
-        print("Response content:", response.content)
+        logging.error("API request failed: %s", e)
+        logging.debug("Response content: %s", response.content)
         return "An error occurred while processing the image."
     except ValueError as e:
-        print(f"Invalid response: {e}")
+        logging.error("Invalid response: %s", e)
         return "An unexpected response was received from the API."
 
 def encode_image_from_bytes(bytes_data):
