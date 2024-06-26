@@ -22,7 +22,7 @@ dsmv1, dsmv2 = st.columns([1,2])
 with dsmv1:
     st.markdown("""
         <a href="https://chatwithdsm5.streamlit.app" target="_blank">
-            <img src="https://drive.google.com/uc?export=download&id=1enrIZpZjbefdPpHbVcjaptyWP31i6QVV" 
+            <img src="https://lh3.googleusercontent.com/d/1enrIZpZjbefdPpHbVcjaptyWP31i6QVV" 
                  style="width:100%; height:auto;">
         </a>
         """, unsafe_allow_html=True)
@@ -49,7 +49,7 @@ with bible1:
         """, unsafe_allow_html=True)
 
 with bible2:
-    st.write("TESTING. An experiment in interactive data visualization using large amounts of text data, as well as a little bit of NLP (Natural Language Processing) "
+    st.write("An experiment in interactive data visualization using large amounts of text data, as well as a little bit of NLP (Natural Language Processing) "
              "and RegEx (Regular Expressions), this streamlit app allows you to enter one or more names, words or phrases "
              "you'd like to search for in the King James New Testament Bible, and see them all displayed on an interactive "
              "timeline with a point for each apperance of the entered term. I attempted to try and compensate for the fact "
