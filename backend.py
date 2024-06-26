@@ -15,11 +15,9 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
 from io import BytesIO
-import logging
 
 litellm.set_verbose=True
 
-logging.basicConfig(filename='recipe_gpt.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
 
 # @retry(wait=wait_random_exponential(multiplier=1, max=40), stop=stop_after_attempt(3))
@@ -258,7 +256,6 @@ def look_at_pix(base64_image):
         "Content-Type": "application/json",
         "Authorization": f"Bearer {st.secrets['OPENAI_API_KEY']}"
     }
-
     payload = {
         "model": "gpt-4-vision-preview",
         "messages": [
@@ -267,10 +264,9 @@ def look_at_pix(base64_image):
                 "content": [
                     {
                         "type": "text",
+                        # "text": "What’s in this image?"
                         "text": """You are being tasked with helping a recipe-creation LLM to create recipes based on the ingredients seen in a photograph. You are looking at a picture of food items on a table.  You are going to list only the items you see, without commentary. For example, a good response would be:
-
   "Milk, carrots, eggs, bell peppers, mushrooms."
-
   A bad response would be:
   "A carton of eggs, which can be used in multiple recipes, from omelets to baked dishes.
   A bottle of milk, a staple for many recipes including sauces, batters, and baked goods.
@@ -278,7 +274,6 @@ def look_at_pix(base64_image):
   Fruits such as apples and lemons, which could be used for desserts, juices, or flavoring dishes.
   A loaf of bread, likely a baguette, which can be served as a side or used in sandwiches and bread puddings.
   Various herbs and spices in jars, which are essential for flavoring any dish."
-
   What food items or potential recipe ingredients do you see in this photo?
   """
                     },
@@ -291,42 +286,25 @@ def look_at_pix(base64_image):
                 ]
             }
         ],
-        "max_tokens": 300,
-        "stream": True  # Enable streaming responses
+        "max_tokens": 300
     }
 
+    response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+    return response.json()['choices'][0]['message']['content']
     try:
-        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload, stream=True)
+        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
         response.raise_for_status()  # Check if the request was successful
-
-        content = ""
-        for line in response.iter_lines():
-            if line:
-                line_data = line.decode('utf-8')
-                logging.debug("Received line: %s", line_data)
-                if line_data.startswith("data: "):
-                    line_data = line_data[len("data: "):]
-                    if line_data == "[DONE]":
-                        break
-                    try:
-                        chunk = json.loads(line_data)
-                        if "choices" in chunk:
-                            delta_content = chunk["choices"][0]["delta"].get("content", "")
-                            content += delta_content
-                    except json.JSONDecodeError as e:
-                        logging.error("JSON decode error: %s", e)
-
-        if content:
-            return content.strip()
+        response_data = response.json()
+        if 'choices' in response_data:
+            return response_data['choices'][0]['message']['content']
         else:
-            logging.error("No content found in the response")
+            print("Response does not contain 'choices' key")
             return "An unexpected response was received from the API."
     except requests.exceptions.RequestException as e:
-        logging.error("API request failed: %s", e)
-        logging.debug("Response content: %s", response.content)
+        print(f"API request failed: {e}")
         return "An error occurred while processing the image."
     except ValueError as e:
-        logging.error("Invalid response: %s", e)
+        print(f"Invalid response: {e}")
         return "An unexpected response was received from the API."
 
 def encode_image_from_bytes(bytes_data):
