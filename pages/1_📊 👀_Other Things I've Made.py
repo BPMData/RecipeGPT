@@ -43,7 +43,7 @@ bible1, bible2 = st.columns([1,2])
 with bible1:
     st.markdown("""
         <a href="https://biblesearcher.streamlit.app/" target="_blank">
-            <img src="https://drive.google.com/uc?export=download&id=1GecCdjPsGEWAr8M74SzrKHnvR5fWUIPL" 
+            <img src="https://lh3.googleusercontent.com/d/1GecCdjPsGEWAr8M74SzrKHnvR5fWUIPL" 
                  style="width:100%; height:auto;">
         </a>
         """, unsafe_allow_html=True)
