@@ -67,7 +67,7 @@ don1, don2 = st.columns([1,2])
 with don1:
     st.markdown("""
         <a href="https://chat.openai.com/g/g-L4vGrKHFT-what-s-on-with-don" target="_blank">
-            <img src="https://drive.google.com/uc?export=download&id=1es3C3XcpiPdx8NccKRKM9EJxLS0VlAf5" 
+            <img src="https://lh3.googleusercontent.com/d/1es3C3XcpiPdx8NccKRKM9EJxLS0VlAf5" 
                  style="width:100%; height:auto;">
         </a>
         """, unsafe_allow_html=True)
@@ -88,7 +88,7 @@ weather1, weather2 = st.columns([1,2])
 with weather1:
     st.markdown("""
         <a href="https://weatherforecaster.streamlit.app/" target="_blank">
-            <img src="https://drive.google.com/uc?export=download&id=1hlIvPLoeFAOVwMKf183_T7qsHbxCGLxx" 
+            <img src="https://lh3.googleusercontent.com/d/1hlIvPLoeFAOVwMKf183_T7qsHbxCGLxx" 
                  style="width:100%; height:auto;">
         </a>
         """, unsafe_allow_html=True)
@@ -103,7 +103,7 @@ rpub1, rpub2 = st.columns([1,2])
 with rpub1:
     st.markdown("""
         <a href="https://rpubs.com/BPMData/Project2_WeatherAnalysis" target="_blank">
-            <img src="https://drive.google.com/uc?export=download&id=1OktEdwJt-Px6UTtk_oH7UPYZRuUpfJeL" 
+            <img src="https://lh3.googleusercontent.com/d/1OktEdwJt-Px6UTtk_oH7UPYZRuUpfJeL" 
                  style="width:100%; height:auto;">
         </a>
         """, unsafe_allow_html=True)
@@ -126,7 +126,7 @@ kfood1, kfood2 = st.columns([1,2])
 with kfood1:
     st.markdown("""
         <a href="https://koreanfood.shorthandstories.com/casestudy/" target="_blank">
-            <img src="https://drive.google.com/uc?export=download&id=1DtbWsg3Lkhegz1vXXInnOAvMEuZWiks-" 
+            <img src="https://lh3.googleusercontent.com/d/1DtbWsg3Lkhegz1vXXInnOAvMEuZWiks-" 
                  style="width:100%; height:auto;">
         </a>
         """, unsafe_allow_html=True)
