@@ -15,8 +15,12 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
 from io import BytesIO
+import logging
 
 litellm.set_verbose=True
+
+logging.basicConfig(filename='recipe_gpt.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
+
 
 # @retry(wait=wait_random_exponential(multiplier=1, max=40), stop=stop_after_attempt(3))
 def get_response_stream(ingredients_list, model='gpt-3.5-turbo', temperature=0.7, tokens=3000, target_audience=all_audiences['A working professional.'],
