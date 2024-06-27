@@ -21,8 +21,8 @@ litellm.set_verbose=True
 
 
 # @retry(wait=wait_random_exponential(multiplier=1, max=40), stop=stop_after_attempt(3))
-def get_response_stream(ingredients_list, model='gpt-3.5-turbo', temperature=0.7, tokens=3000, target_audience=all_audiences['A working professional.'],
-                 target_cuisine=all_cuisines["Nothing in particular"], model_to_use="gpt-3.5-turbo",
+def get_response_stream(ingredients_list, model='gpt-4o', temperature=0.7, tokens=3000, target_audience=all_audiences['A working professional.'],
+                 target_cuisine=all_cuisines["Nothing in particular"], model_to_use="gpt-4o",
                         must_nots="", sweets=False, restrictions=[]):
     try:
         # Initialize must_not_text
@@ -55,8 +55,8 @@ def get_response_stream(ingredients_list, model='gpt-3.5-turbo', temperature=0.7
     except openai.APITimeoutError as e:
         print(f"Exception {e} raised, retrying....")
 
-def get_response(ingredients_list, model='gpt-3.5-turbo', temperature=0.7, tokens=2000, target_audience=all_audiences['A working professional.'],
-                 target_cuisine=all_cuisines["Nothing in particular"], model_to_use="gpt-3.5-turbo"):
+def get_response(ingredients_list, model='gpt-4o', temperature=0.7, tokens=2000, target_audience=all_audiences['A working professional.'],
+                 target_cuisine=all_cuisines["Nothing in particular"], model_to_use="gpt-4o):
     response = completion(
         model=model_to_use,
         messages=[{"content": generate_prompt(target_audience, target_cuisine), "role": "system"},
