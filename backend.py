@@ -56,7 +56,7 @@ def get_response_stream(ingredients_list, model='gpt-4o', temperature=0.7, token
         print(f"Exception {e} raised, retrying....")
 
 def get_response(ingredients_list, model='gpt-4o', temperature=0.7, tokens=2000, target_audience=all_audiences['A working professional.'],
-                 target_cuisine=all_cuisines["Nothing in particular"], model_to_use="gpt-4o):
+                 target_cuisine=all_cuisines["Nothing in particular"], model_to_use="gpt-4o"):
     response = completion(
         model=model_to_use,
         messages=[{"content": generate_prompt(target_audience, target_cuisine), "role": "system"},
