@@ -57,7 +57,7 @@ recipe_provided = False
 
 # Set a default model
 if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = "gpt-3.5-turbo"
+    st.session_state["openai_model"] = "gpt-4o"
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -179,7 +179,7 @@ if prompt:
         full_response = ''
         for response in get_response_stream(
                 ingredients_list=prompt,
-                model='gpt-3.5-turbo',
+                model='gpt-4o',
                 target_cuisine=cuisine_to_use,
                 target_audience=all_audiences[audience_choice],
                 must_nots=must_not_include,
